@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:8080/api/elasticsearch
+@index = partner-index
+@id = 1
+@fieldName = partnerId
+@fieldValue = P001
+
+###
+# 문서 추가
+POST {{baseUrl}}/{{index}}/
+Content-Type: application/json
+
+{
+  "partnerId": "P001",
+  "ownerName": "홍길동",
+  "status": "NORMAL",
+  "updatedAt": "2025-10-22T18:00:00"
+}
+
+###
+# 문서 조회
+GET {{baseUrl}}/{{index}}/{{id}}?field={{fieldName}}&value={{fieldValue}}
