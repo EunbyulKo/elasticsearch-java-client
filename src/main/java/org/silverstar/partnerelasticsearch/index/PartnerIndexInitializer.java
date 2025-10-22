@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-@Profile("!test")
+@Profile("local")
 public class PartnerIndexInitializer {
 
     private final ElasticsearchClient elasticsearchClient;

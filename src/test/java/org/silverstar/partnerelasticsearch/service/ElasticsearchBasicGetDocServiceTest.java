@@ -8,16 +8,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class ElasticsearchBasicGetDocServiceTest {
 
@@ -42,7 +44,7 @@ class ElasticsearchBasicGetDocServiceTest {
         GetResponse<Map> mockResponse = mock(GetResponse.class);
         when(mockResponse.found()).thenReturn(true);
         when(mockResponse.source()).thenReturn(mockSource);
-        when(client.get(any(GetRequest.class), eq(Map.class))).thenReturn(mockResponse);
+        when(client.get(any(Function.class), eq(Map.class))).thenReturn(mockResponse);
 
         // when
         Map<String, Object> result = elasticSearchBasicService.getDocument(index, id);
@@ -62,7 +64,7 @@ class ElasticsearchBasicGetDocServiceTest {
         // mock 생성
         GetResponse<Map> mockResponse = mock(GetResponse.class);
         when(mockResponse.found()).thenReturn(false);
-        when(client.get(any(GetRequest.class), eq(Map.class))).thenReturn(mockResponse);
+        when(client.get(any(Function.class), eq(Map.class))).thenReturn(mockResponse);
 
         // when
         Map<String, Object> result = elasticSearchBasicService.getDocument(index, id);
@@ -74,7 +76,7 @@ class ElasticsearchBasicGetDocServiceTest {
     @Test
     void testGetDocument_throwIOException() throws Exception {
         // given
-        when(client.get(any(GetRequest.class), eq(Map.class)))
+        when(client.get(any(Function.class), eq(Map.class)))
                 .thenThrow(new IOException("Elasticsearch 연결 오류"));
 
         // then
